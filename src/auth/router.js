@@ -6,14 +6,18 @@ const Users = require('./models/users-model.js');
 const bcrypt = require('bcrypt');
 const app = express();
 const basicAuth = require('./middleware/basic.js');
+require('mongoose');
 
 const router = express.Router();
 
 router.post('/signup', async(req, res) => {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 5);
+    console.log(req.body.password);
     const user = new Users(req.body)
+    console.log(user);
     const record = await user.save(req.body);
+    console.log(record); //er
     res.status(200).json(record);
   } catch {
     res.status(500).send('error creating user');
@@ -21,7 +25,6 @@ router.post('/signup', async(req, res) => {
 })
 
 router.post('/signin', basicAuth);
-
 
 module.exports = router;
 
