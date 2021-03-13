@@ -5,10 +5,19 @@ const bcrypt = require('bcrypt')
 const Users = require('../models/users-model.js');
 
 async function basicAuth (req, res) {
- let basicHeaderParts = req.headers.authorization.split(' ');
- let encodedString = basicHeaderParts.pop();
- let decodedString = base64.decode(encodedString);
- let [username, password] = decodedString.split(':');
+ let basicHeaderParts = req.headers.authorization.split(' ')[1];
+
+ console.log('basicheaderparts..', basicHeaderParts);
+//  let encodedString = basicHeaderParts.pop();
+//  console.log(encodedString)
+//  let password = encodedString.split(':').pop();
+//  console.log('password', password)
+ let decodedString = base64.decode(basicHeaderParts);
+//  let [username, password] = decodedString.split(':');
+console.log('decoded string..', decodedString);
+let username = decodedString.split(':')[0];
+let password = decodedString.split(':')[1];
+// console.log('username&password', username, password);
  
  try {
    const user = await Users.findOne({ username: username})
@@ -26,26 +35,9 @@ module.exports = basicAuth;
 
 
 
-
-
-
-
-
-
-//authentication logic 
-//simple encoding 
-//bring in users-model.js
-
-//used for signin 
-
-//43-78
-
-
-//55-58
-
-
-
-
-
+// let basicHeaderParts = req.headers.authorization.split(' ');  // ['Basic', 'sdkjdsljd=']
+// let encodedString = basicHeaderParts.pop();  // sdkjdsljd=
+// let decodedString = base64.decode(encodedString); // "username:password"
+// let [username, password] = decodedString.split(':'); // username, password
 
 
